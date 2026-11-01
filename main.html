@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Alejandro en India</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Hind:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a "today" card on top, a 28-day route strip, then the whole trip day by day. Ink on cool paper, marigold for "now". */
+:root{
+  --bg:#f3f4f8; --surface:#ffffff; --ink:#1d2340; --muted:#5d6382; --line:#dcdfeb;
+  --accent:#e08a00; --accent-soft:#fff1d6; --accent-ink:#8a5200;
+  --danger:#b3261e; --danger-soft:#fbe9e7;
+  --r-delhi:#5b6abf; --r-jaipur:#c9577a; --r-himalaya:#3f8a8c; --r-varanasi:#d98a1f; --r-travel:#9aa0b8;
+  --f-display:"Yatra One", "Hind", Georgia, serif;
+  --f-body:"Hind", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12152a; --surface:#1b1f38; --ink:#e8eaf6; --muted:#a3a8c6; --line:#2e3354;
+  --accent:#ffb53d; --accent-soft:#3a2c12; --accent-ink:#ffcf7a;
+  --danger:#ff8a80; --danger-soft:#3b1d1d;
+  --r-delhi:#8794e6; --r-jaipur:#e886a5; --r-himalaya:#6cc0c2; --r-varanasi:#f0ad4e; --r-travel:#6d7393;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12152a; --surface:#1b1f38; --ink:#e8eaf6; --muted:#a3a8c6; --line:#2e3354;
+  --accent:#ffb53d; --accent-soft:#3a2c12; --accent-ink:#ffcf7a;
+  --danger:#ff8a80; --danger-soft:#3b1d1d;
+  --r-delhi:#8794e6; --r-jaipur:#e886a5; --r-himalaya:#6cc0c2; --r-varanasi:#f0ad4e; --r-travel:#6d7393;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(2rem,6vw,2.8rem);line-height:1.1}
+h2{font-family:var(--f-display);font-weight:400;font-size:1.5rem}
+.eyebrow{font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+header{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-end;justify-content:space-between}
+header p{margin:6px 0 0;color:var(--muted);max-width:52ch}
+.clocks{display:flex;gap:10px}
+.clock{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:118px}
+.clock b{display:block;font-family:var(--f-mono);font-size:1.25rem;font-weight:500}
+.clock span{font-size:.75rem;color:var(--muted)}
+
+/* Today */
+.today{background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:18px}
+.today-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:baseline}
+.pill{display:inline-block;background:var(--accent-soft);color:var(--accent-ink);font-weight:600;font-size:.8rem;border-radius:999px;padding:2px 10px}
+.today h2{font-size:clamp(1.6rem,5vw,2.1rem)}
+.today .summary{margin:0;font-size:1.05rem;max-width:62ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.box{border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.box h3{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.box .name{font-weight:600;font-size:1.05rem}
+.box p{margin:0}
+.addr{color:var(--muted);font-size:.95rem}
+.events{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.events li{display:grid;grid-template-columns:62px 1fr;gap:10px;align-items:baseline}
+.events .t{font-family:var(--f-mono);font-size:.85rem;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.events .w{min-width:0}
+.phone{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.phone a{font-family:var(--f-mono);color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--muted);user-select:all}
+.phone small{color:var(--muted)}
+button.copy{font:inherit;font-size:.75rem;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:1px 8px;cursor:pointer}
+button.copy:hover{border-color:var(--accent);color:var(--ink)}
+button:focus-visible,a:focus-visible,.cell:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.next{border-top:1px dashed var(--line);padding-top:14px;color:var(--muted)}
+.next b{color:var(--ink)}
+.note{background:var(--accent-soft);color:var(--accent-ink);border-radius:10px;padding:10px 14px;font-size:.95rem}
+
+/* Emergency */
+.sos{background:var(--danger-soft);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.sos h2{color:var(--danger)}
+.sos .grid2{gap:12px}
+.sos .box{background:var(--surface);border-color:transparent}
+
+/* Strip */
+.strip-wrap{display:flex;flex-direction:column;gap:10px}
+.strip{display:grid;grid-template-columns:repeat(28,1fr);gap:3px}
+.cell{height:38px;border-radius:4px;border:0;padding:0;cursor:pointer;position:relative;opacity:.9}
+.cell.past{opacity:.35}
+.cell.now{outline:3px solid var(--accent);outline-offset:2px;opacity:1}
+.cell span{position:absolute;left:0;right:0;bottom:-20px;font-family:var(--f-mono);font-size:.62rem;color:var(--muted);text-align:center}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:18px;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+
+/* Day list */
+.days{display:flex;flex-direction:column;gap:10px}
+.stage{font-family:var(--f-display);font-size:1.15rem;margin-top:14px;display:flex;align-items:center;gap:10px}
+.stage i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:76px 1fr;overflow:hidden;scroll-margin-top:16px}
+.day.past{opacity:.6}
+.day.now{border:2px solid var(--accent)}
+.day .date{padding:14px 10px;text-align:center;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:0}
+.day .date .wd{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.day .date .n{font-family:var(--f-mono);font-size:1.6rem;line-height:1.1;font-weight:500}
+.day .date .m{font-size:.75rem;color:var(--muted)}
+.day .body{padding:12px 16px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.day .ttl{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.day .ttl b{font-size:1.05rem}
+.day .city{font-size:.8rem;color:var(--muted)}
+.day .sleep{font-size:.92rem;color:var(--muted)}
+.day .sleep b{color:var(--ink);font-weight:600}
+.tag{font-size:.72rem;font-weight:600;border-radius:999px;padding:1px 8px;background:var(--accent-soft);color:var(--accent-ink)}
+footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:520px){
+  .day{grid-template-columns:58px 1fr}
+  .events li{grid-template-columns:52px 1fr}
+  .cell{height:30px}
+  .cell span{display:none}
+  .legend{margin-top:6px}
+  .today{padding:18px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">4 de noviembre – 1 de diciembre de 2026</div>
+      <h1>Alejandro en India</h1>
+      <p>Dónde está cada día, dónde duerme y a quién llamar. La página se actualiza sola con la fecha de India, que va 11 h 30 min adelante de México.</p>
+    </div>
+    <div class="clocks" aria-label="Hora actual">
+      <div class="clock"><span>India</span><b id="clk-in">--:--</b></div>
+      <div class="clock"><span>Ciudad de México</span><b id="clk-mx">--:--</b></div>
+    </div>
+  </header>
+
+  <section class="today" id="today" aria-live="polite"></section>
+
+  <section class="sos" aria-labelledby="sos-h">
+    <h2 id="sos-h">Si no saben de él o hay una emergencia</h2>
+    <div class="grid2" id="sos"></div>
+  </section>
+
+  <section class="strip-wrap" aria-labelledby="strip-h">
+    <h2 id="strip-h">El recorrido</h2>
+    <div class="strip" id="strip"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section aria-labelledby="days-h" style="display:flex;flex-direction:column;gap:10px">
+    <h2 id="days-h">Día por día</h2>
+    <div class="days" id="days"></div>
+  </section>
+
+  <footer>Horarios en hora local de donde esté Alejandro. Datos al 1 de noviembre de 2026; los planes de paseo pueden cambiar, las reservas no.</footer>
+</div>
+
+<script>
+const R={
+  travel:{label:"En tránsito",c:"--r-travel"},
+  delhi:{label:"Delhi",c:"--r-delhi"},
+  jaipur:{label:"Jaipur",c:"--r-jaipur"},
+  himalaya:{label:"Siliguri y Himalaya",c:"--r-himalaya"},
+  varanasi:{label:"Varanasi",c:"--r-varanasi"}
+};
+
+const P=(n,label)=>({n,label});
+const C={
+  deendayal:P("+91 98731 41754","Deendayal (anfitrión)"),
+  planner:P("+91 92895 03085","Wedding planner de la boda"),
+  joeys:P("+91 98186 42824","Joey's Hostel"),
+  ashutosh:P("+91 84231 60288","Ashutosh (Wander Station)"),
+  wander:P("+91 94157 98378","Wander Station (recepción)")
+};
+
+const S={
+  plane:{name:"En el avión",addr:"Vuelos de Air Canada",contacts:[]},
+  dd:{name:"DD Homestay, casa de Deendayal",addr:"B-20, Vikram Nagar (junto a Feroz Shah Kotla), Nueva Delhi 110002",contacts:[C.deendayal]},
+  zostel:{name:"Zostel Jaipur (Hawa Mahal)",addr:"Primer piso, 85-A Rajamal Ka Talab, edificio ICICI Bank, Chandi ki Taksal, frente a la Tourist Police Station, Jaipur 302002",contacts:[],extra:"Hostal. No tenemos teléfono directo; está frente a la estación de Policía Turística."},
+  sumiran:{name:"Departamento de Sumiran Chettri (Airbnb)",addr:"Spring Town Road, Ward 42, Siliguri 734008 (cerca de Vega Mall)",contacts:[],extra:"Contacto con la anfitriona solo por Airbnb."},
+  trek:{name:"Campamentos de Indiahikes",addr:"Trek Sandakphu–Phalut, cordillera Singalila. Campamento base en Sepi (Darjeeling, Bengala Occidental)",contacts:[],extra:"En la montaña la señal es escasa o nula: es normal no saber de él uno o varios días. Va en grupo con un trek leader de Indiahikes."},
+  train:{name:"Estación New Jalpaiguri y tren nocturno",addr:"Estación NJP (Siliguri) → tren Brahmaputra Express 15658, vagón con literas (2A)",contacts:[]},
+  wander:{name:"Wander Station (hostal)",addr:"D 21/24, Rana Mahal Ghat, Bengali Tola, Varanasi. A 450 m a pie de la calle principal",contacts:[C.ashutosh,C.wander],extra:"Correo: wanderstationhostels@gmail.com"},
+  joeys:{name:"Joey's Hostel",addr:"1/49 Lalita Park, Laxmi Nagar, Main Vikas Marg, Delhi 110092 (East Delhi)",contacts:[C.joeys],extra:"Correo: joeyshostel@gmail.com"},
+  tbd:{name:"Por confirmar",addr:"Posible noche extra en Joey's Hostel; si no, en el aeropuerto de Delhi (Terminal 3) hasta su vuelo de la 01:45",contacts:[C.joeys]},
+  home:{name:"En casa",addr:"Ciudad de México",contacts:[]}
+};
+
+const H={
+  delhi:"AIIMS (Ansari Nagar), Max Saket o Apollo (Sarita Vihar)",
+  jaipur:"SMS Hospital (Sawai Man Singh), Jaipur",
+  himalaya:"North Bengal Medical College, Siliguri",
+  varanasi:"Sir Sunderlal Hospital (BHU), Varanasi",
+  travel:null
+};
+
+const D=[
+ {d:"2026-11-04",r:"travel",title:"Sale de México",sum:"Vuela a Montreal y espera unas 10 horas para el vuelo largo a Delhi.",ev:[["06:00","Sale de CDMX (Terminal 1), Air Canada AC 2094"],["12:05","Llega a Montreal (hora de Montreal)"],["22:05","Sale a Delhi, Air Canada AC 50"]],s:"plane"},
+ {d:"2026-11-05",r:"travel",title:"Vuelo a Delhi",sum:"Todo el día en el aire. Aterriza de noche y toma un Uber a casa de Deendayal.",ev:[["22:45","Aterriza en Delhi, Terminal 3 (hora de India)"],["~00:30","Llega a casa de Deendayal (ya es 6 nov)"]],s:"dd"},
+ {d:"2026-11-06",r:"delhi",title:"Descanso y jet lag",sum:"Día tranquilo en Delhi para adaptarse al horario. Primer día de Diwali.",ev:[["Día","Paseo ligero cerca de Vikram Nagar"]],s:"dd",tag:"Diwali"},
+ {d:"2026-11-07",r:"jaipur",title:"Tren a Jaipur",sum:"Madruga para el tren a Jaipur, la Ciudad Rosa.",ev:[["05:20","Sale de casa de Deendayal"],["06:10","Tren 12015 Ajmer Shatabdi desde Nueva Delhi (NDLS)"],["10:35","Llega a Jaipur"],["13:00","Entrada al hostal Zostel"]],s:"zostel",tag:"Diwali"},
+ {d:"2026-11-08",r:"jaipur",title:"Diwali en Jaipur",sum:"Día principal de Diwali: fuertes, bazares y la ciudad iluminada de noche.",ev:[["Día","Ciudad vieja, Hawa Mahal y bazares"],["Noche","Luces de Diwali"]],s:"zostel",tag:"Diwali"},
+ {d:"2026-11-09",r:"jaipur",title:"Excursión desde Jaipur",sum:"Día para Amber y Jaigarh, o una excursión a Abhaneri / Bhangarh.",ev:[["Día","Excursión por definir"]],s:"zostel",tag:"Diwali"},
+ {d:"2026-11-10",r:"jaipur",title:"Regreso a Delhi",sum:"Última mañana en Jaipur y tren de vuelta a Delhi por la tarde.",ev:[["10:00","Sale del hostal"],["17:35","Tren 12016 Shatabdi a Delhi"],["22:30","Llega a Nueva Delhi (NDLS) y va a casa de Deendayal"]],s:"dd"},
+ {d:"2026-11-11",r:"delhi",title:"Paseo por Delhi",sum:"Monumentos y museos de Delhi.",ev:[["Día","Paseo por la ciudad"]],s:"dd"},
+ {d:"2026-11-12",r:"delhi",title:"Taj Mahal y Agra",sum:"Excursión en grupo con los invitados de la boda.",ev:[["07:45","Salida del Ginger Hotel, Safdarjung (Bali Marg, 110021)"],["Mañana","Taj Mahal"],["Tarde","Fuerte de Agra"],["~20:00","Regreso a Delhi (depende del tráfico)"]],s:"dd",ctx:[C.planner]},
+ {d:"2026-11-13",r:"delhi",title:"Partido de futbol del novio",sum:"Mañana libre (Mehrauli y Qutub Minar) y por la tarde futbol con el grupo de la boda.",ev:[["Mañana","Mehrauli"],["15:00","Partido en GD Goenka, The Flagship School, Vasant Kunj"]],s:"dd",ctx:[C.planner]},
+ {d:"2026-11-14",r:"delhi",title:"La boda de Sofía y Rohan",sum:"Recepción al mediodía y fiesta en la noche, en dos lugares distintos.",ev:[["12:30","Recepción: 3 Motilal Nehru Place, entrada por Janpath Rd, 110011"],["19:00","After party: Eldeco Centre, Hauz Rani, Malviya Nagar, 110017"]],s:"dd",tag:"Boda",ctx:[C.planner]},
+ {d:"2026-11-15",r:"himalaya",title:"Vuelo a Bagdogra",sum:"Vuela al norte de Bengala, al pie del Himalaya, y duerme en Siliguri.",ev:[["11:15","Sale de casa de Deendayal"],["14:50","Vuelo IndiGo 6E 6378, Terminal 1 de Delhi"],["16:45","Llega a Bagdogra y va a Siliguri"]],s:"sumiran"},
+ {d:"2026-11-16",r:"himalaya",title:"Inicio del trek",sum:"Traslado de unas 7 horas por carretera de montaña al campamento base de Sepi.",ev:[["Mañana","Recogida de Indiahikes en Siliguri / NJP (hora por confirmar)"],["Tarde","Llega al campamento base en Sepi"]],s:"trek",tag:"Trek"},
+ {d:"2026-11-17",r:"himalaya",title:"Trek, día 2",sum:"Caminando por la cordillera Singalila.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-18",r:"himalaya",title:"Trek, día 3",sum:"Subiendo hacia Sandakphu (3,636 m), con vista al Everest y al Kanchenjunga.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-19",r:"himalaya",title:"Trek, día 4",sum:"En la parte alta de la ruta, hacia Phalut.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-20",r:"himalaya",title:"Trek, día 5",sum:"En la parte alta de la ruta.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-21",r:"himalaya",title:"Trek, día 6",sum:"Bajando de regreso hacia Sepi.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-22",r:"himalaya",title:"Fin del trek",sum:"Regresa a Sepi y baja en camioneta a la estación de New Jalpaiguri. Espera ahí su tren nocturno.",ev:[["~21:00","Llega a la estación NJP"],["00:15","Sale el tren a DDU (ya es 23 nov)"]],s:"train",tag:"Trek"},
+ {d:"2026-11-23",r:"varanasi",title:"Tren a Varanasi",sum:"Casi todo el día en tren. Llega a Varanasi al anochecer.",ev:[["00:15","Brahmaputra Express 15658 desde NJP"],["16:33","Llega a la estación DD Upadhyaya (DDU)"],["~18:00","Llega al hostal en Varanasi"]],s:"wander"},
+ {d:"2026-11-24",r:"varanasi",title:"Dev Deepawali en Varanasi",sum:"Fiesta de las lámparas: los 84 ghats del Ganges se iluminan. Todo el día a pie por las multitudes.",ev:[["~17:00–19:45","Encendido de lámparas en los ghats"]],s:"wander",tag:"Festival"},
+ {d:"2026-11-25",r:"delhi",title:"Vuelo de regreso a Delhi",sum:"Mañana en Varanasi y vuelo a Delhi por la tarde. Llega a su último hostal en East Delhi.",ev:[["10:30","Sale del hostal"],["~14:30","Va al aeropuerto de Varanasi"],["17:15","Vuelo IndiGo 6E 5292"],["18:50","Llega a Delhi, Terminal 3"],["~20:00","Llega a Joey's Hostel"]],s:"joeys"},
+ {d:"2026-11-26",r:"delhi",title:"Delhi",sum:"Paseo por Delhi (Old Delhi, Fuerte Rojo, museos).",ev:[],s:"joeys"},
+ {d:"2026-11-27",r:"delhi",title:"Delhi",sum:"Paseo por Delhi, o excursión de un día a Mathura y Vrindavan.",ev:[],s:"joeys"},
+ {d:"2026-11-28",r:"delhi",title:"Delhi",sum:"Paseo por Delhi.",ev:[],s:"joeys"},
+ {d:"2026-11-29",r:"delhi",title:"Último día en India",sum:"Tarde libre en Delhi y en la noche al aeropuerto.",ev:[["11:00","Salida de Joey's (salvo que agregue la noche)"],["~22:00","Sale al aeropuerto, Terminal 3"]],s:"tbd"},
+ {d:"2026-11-30",r:"travel",title:"Vuelo de regreso",sum:"Delhi → Zúrich (escala de unas 7 horas) → Toronto → Ciudad de México.",ev:[["01:45","Sale de Delhi (Swiss, AC 6825)"],["Día","Escala en Zúrich, luego AC 881 a Toronto"],["Noche","AC 1889 a Ciudad de México"]],s:"plane"},
+ {d:"2026-12-01",r:"travel",title:"Llega a casa",sum:"Aterriza en la Ciudad de México de madrugada.",ev:[["01:15","Llega a CDMX (hora de México)"]],s:"home"}
+];
+
+const EMERG=[
+ {name:"Emergencias en India",lines:[P("112","Policía, ambulancia, bomberos (todo el país)")]},
+ {name:"Embajada de México en Nueva Delhi",addr:"F 9/5 Vasant Vihar, Nueva Delhi 110057",lines:[P("+91 97177 20003","Emergencias (fuera de horario, para mexicanos)"),P("+91 11 4507 1373","Oficina")]},
+ {name:"Embajada de España en Nueva Delhi",addr:"12 Prithviraj Road, Nueva Delhi 110011 · Consulado: 4 Golf Links",lines:[P("+91 98101 74160","Emergencia consular (españoles)"),P("+91 11 4129 3000","Embajada")]},
+ {name:"Durante la boda (6–15 nov)",lines:[C.planner]}
+];
+
+const WD=["dom","lun","mar","mié","jue","vie","sáb"];
+const MO=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MOL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const WDL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const dObj=s=>{const[y,m,d]=s.split("-").map(Number);return new Date(Date.UTC(y,m-1,d,12))};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const telHref=n=>"tel:"+n.replace(/[^\d+]/g,"");
+
+function phoneHTML(p){
+  return `<div class="phone"><a href="${telHref(p.n)}">${esc(p.n)}</a><button class="copy" type="button" data-n="${esc(p.n)}">Copiar</button><small>${esc(p.label)}</small></div>`;
+}
+function eventsHTML(ev){
+  if(!ev.length) return "";
+  return `<ul class="events">${ev.map(([t,w])=>`<li><span class="t">${esc(t)}</span><span class="w">${esc(w)}</span></li>`).join("")}</ul>`;
+}
+function stayBox(st){
+  return `<div class="box"><h3>Duerme en</h3><p class="name">${esc(st.name)}</p><p class="addr">${esc(st.addr)}</p>${st.contacts.map(phoneHTML).join("")}${st.extra?`<p class="addr">${esc(st.extra)}</p>`:""}</div>`;
+}
+
+function dateIn(tz,now){return new Intl.DateTimeFormat("en-CA",{timeZone:tz,year:"numeric",month:"2-digit",day:"2-digit"}).format(now)}
+function timeIn(tz,now){return new Intl.DateTimeFormat("es-MX",{timeZone:tz,hour:"2-digit",minute:"2-digit",hour12:false}).format(now)}
+
+const DEPART=Date.parse("2026-11-04T06:00:00-06:00");
+const ARRIVE=Date.parse("2026-12-01T01:15:00-06:00");
+
+function currentKey(now){
+  if(now<DEPART) return "pre";
+  if(now>ARRIVE+6*3600e3) return "post";
+  let k=dateIn("Asia/Kolkata",now);
+  if(k<"2026-11-04") k="2026-11-04"; // still in Mexico / Montreal
+  if(k>"2026-12-01") k="2026-12-01";
+  return k;
+}
+
+function renderToday(key,now){
+  const el=document.getElementById("today");
+  if(key==="pre"){
+    const days=Math.ceil((DEPART-now)/864e5);
+    el.innerHTML=`<div class="today-top"><span class="pill">Antes del viaje</span><span class="eyebrow">Faltan ${days} ${days===1?"día":"días"}</span></div>
+      <h2>Alejandro todavía está en México</h2>
+      <p class="summary">Sale el miércoles 4 de noviembre a las 06:00 desde la Terminal 1 del aeropuerto de la Ciudad de México, con escala en Montreal. Llega a Delhi el jueves 5 a las 22:45, hora de India (11:15 de la mañana en México).</p>
+      ${nextHTML(D[0],"Primer día")}`;
+    return;
+  }
+  if(key==="post"){
+    el.innerHTML=`<div class="today-top"><span class="pill">Viaje terminado</span></div><h2>Alejandro ya está de regreso en México</h2><p class="summary">Aterrizó el 1 de diciembre a la 01:15. Abajo queda el recorrido completo.</p>`;
+    return;
+  }
+  const i=D.findIndex(x=>x.d===key), day=D[i], dt=dObj(key), st=S[day.s];
+  const hosp=H[day.r];
+  el.innerHTML=`<div class="today-top"><span class="pill">Hoy · día ${i+1} de ${D.length}</span><span class="eyebrow">${WDL[dt.getUTCDay()]} ${dt.getUTCDate()} de ${MOL[dt.getUTCMonth()]}</span></div>
+    <div><div class="eyebrow">${esc(R[day.r].label)}</div><h2>${esc(day.title)}</h2></div>
+    <p class="summary">${esc(day.sum)}</p>
+    ${day.r==="himalaya"&&day.s==="trek"?`<div class="note">Está en la montaña. Si no contesta, lo más probable es que no tenga señal.</div>`:""}
+    <div class="grid2">
+      ${day.ev.length?`<div class="box"><h3>Plan del día</h3>${eventsHTML(day.ev)}</div>`:""}
+      ${stayBox(st)}
+      ${day.ctx?`<div class="box"><h3>Contacto del evento</h3>${day.ctx.map(phoneHTML).join("")}</div>`:""}
+      ${hosp?`<div class="box"><h3>Hospital grande cercano</h3><p>${esc(hosp)}</p></div>`:""}
+    </div>
+    ${D[i+1]?nextHTML(D[i+1],"Mañana"):""}`;
+}
+function nextHTML(n,label){
+  return `<div class="next"><b>${label}:</b> ${esc(n.title)} (${esc(R[n.r].label)}). Duerme en ${esc(S[n.s].name)}.</div>`;
+}
+
+function renderSOS(){
+  document.getElementById("sos").innerHTML=EMERG.map(e=>`<div class="box"><p class="name">${esc(e.name)}</p>${e.addr?`<p class="addr">${esc(e.addr)}</p>`:""}${e.lines.map(phoneHTML).join("")}</div>`).join("");
+}
+
+function renderStrip(key){
+  const s=document.getElementById("strip");
+  s.innerHTML=D.map((x,i)=>{
+    const dt=dObj(x.d), cls=key!=="pre"&&(key==="post"||x.d<key)?"past":x.d===key?"now":"";
+    const show=i===0||dt.getUTCDate()%5===0||i===D.length-1;
+    return `<button class="cell ${cls}" type="button" style="background:var(${R[x.r].c})" data-go="${x.d}" aria-label="${dt.getUTCDate()} ${MO[dt.getUTCMonth()]}: ${esc(x.title)}" title="${dt.getUTCDate()} ${MO[dt.getUTCMonth()]} · ${esc(x.title)}">${show?`<span>${dt.getUTCDate()}</span>`:""}</button>`;
+  }).join("");
+  document.getElementById("legend").innerHTML=Object.values(R).map(r=>`<span><i style="background:var(${r.c})"></i>${r.label}</span>`).join("");
+}
+
+const STAGES=[
+  ["2026-11-04","Ida","travel"],["2026-11-06","Delhi","delhi"],["2026-11-07","Jaipur","jaipur"],
+  ["2026-11-11","Delhi y la boda","delhi"],["2026-11-15","Siliguri y trek en el Himalaya","himalaya"],
+  ["2026-11-23","Varanasi","varanasi"],["2026-11-25","Delhi","delhi"],["2026-11-30","Regreso","travel"]
+];
+function renderDays(key){
+  const box=document.getElementById("days");
+  let html="";
+  D.forEach(x=>{
+    const st=STAGES.find(s=>s[0]===x.d);
+    if(st) html+=`<div class="stage"><i style="background:var(${R[st[2]].c})"></i>${st[1]}</div>`;
+    const dt=dObj(x.d);
+    const cls=key==="post"||(key!=="pre"&&x.d<key)?"past":x.d===key?"now":"";
+    const S1=S[x.s];
+    html+=`<article class="day ${cls}" id="d${x.d}">
+      <div class="date"><span class="wd">${WD[dt.getUTCDay()]}</span><span class="n">${dt.getUTCDate()}</span><span class="m">${MO[dt.getUTCMonth()]}</span></div>
+      <div class="body">
+        <div class="ttl"><b>${esc(x.title)}</b>${x.tag?`<span class="tag">${esc(x.tag)}</span>`:""}${x.d===key?`<span class="tag">Hoy</span>`:""}</div>
+        <div class="city">${esc(R[x.r].label)} · ${esc(x.sum)}</div>
+        ${eventsHTML(x.ev)}
+        <div class="sleep">Duerme en: <b>${esc(S1.name)}</b>${S1.contacts.length?` · <span class="mono">${S1.contacts.map(c=>esc(c.n)).join(" · ")}</span>`:""}</div>
+      </div></article>`;
+  });
+  box.innerHTML=html;
+}
+
+function tick(){
+  const now=new Date();
+  document.getElementById("clk-in").textContent=timeIn("Asia/Kolkata",now);
+  document.getElementById("clk-mx").textContent=timeIn("America/Mexico_City",now);
+}
+
+let lastKey=null;
+function render(){
+  const now=Date.now(), key=currentKey(now);
+  tick();
+  if(key===lastKey) return;
+  lastKey=key;
+  renderToday(key,now); renderSOS(); renderStrip(key); renderDays(key);
+}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button.copy");
+  if(b){
+    const n=b.dataset.n;
+    const done=()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar",1500)};
+    try{navigator.clipboard.writeText(n).then(done,()=>selectNum(b));}catch(_){selectNum(b)}
+    return;
+  }
+  const c=e.target.closest("[data-go]");
+  if(c){const t=document.getElementById("d"+c.dataset.go);if(t)t.scrollIntoView({block:"start"});}
+});
+function selectNum(b){const a=b.previousElementSibling;const r=document.createRange();r.selectNodeContents(a);const s=getSelection();s.removeAllRanges();s.addRange(r);}
+
+render();
+setInterval(render,30000);
+</script>
+
+</body>
+</html>
