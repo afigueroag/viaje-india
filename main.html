@@ -14,7 +14,7 @@
 :root{
   --bg:#f3f4f8; --surface:#ffffff; --ink:#1d2340; --muted:#5d6382; --line:#dcdfeb;
   --accent:#e08a00; --accent-soft:#fff1d6; --accent-ink:#8a5200;
-  --danger:#b3261e; --danger-soft:#fbe9e7;
+  --danger:#b3261e; --danger-soft:#fbe9e7; --scrim:rgba(20,24,48,.55);
   --r-delhi:#5b6abf; --r-jaipur:#c9577a; --r-himalaya:#3f8a8c; --r-varanasi:#d98a1f; --r-travel:#9aa0b8;
   --f-display:"Yatra One", "Hind", Georgia, serif;
   --f-body:"Hind", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -23,13 +23,13 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#12152a; --surface:#1b1f38; --ink:#e8eaf6; --muted:#a3a8c6; --line:#2e3354;
   --accent:#ffb53d; --accent-soft:#3a2c12; --accent-ink:#ffcf7a;
-  --danger:#ff8a80; --danger-soft:#3b1d1d;
+  --danger:#ff8a80; --danger-soft:#3b1d1d; --scrim:rgba(0,0,0,.7);
   --r-delhi:#8794e6; --r-jaipur:#e886a5; --r-himalaya:#6cc0c2; --r-varanasi:#f0ad4e; --r-travel:#6d7393;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#12152a; --surface:#1b1f38; --ink:#e8eaf6; --muted:#a3a8c6; --line:#2e3354;
   --accent:#ffb53d; --accent-soft:#3a2c12; --accent-ink:#ffcf7a;
-  --danger:#ff8a80; --danger-soft:#3b1d1d;
+  --danger:#ff8a80; --danger-soft:#3b1d1d; --scrim:rgba(0,0,0,.7);
   --r-delhi:#8794e6; --r-jaipur:#e886a5; --r-himalaya:#6cc0c2; --r-varanasi:#f0ad4e; --r-travel:#6d7393;
   color-scheme:dark}
 *{box-sizing:border-box}
@@ -75,8 +75,55 @@ button:focus-visible,a:focus-visible,.cell:focus-visible{outline:2px solid var(-
 .next b{color:var(--ink)}
 .note{background:var(--accent-soft);color:var(--accent-ink);border-radius:10px;padding:10px 14px;font-size:.95rem}
 
+/* Calm */
+.calm{display:flex;flex-direction:column;gap:12px}
+.calm p.lead{margin:0;color:var(--muted);max-width:62ch}
+.quiet{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.quiet li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.quiet .when{font-family:var(--f-mono);font-size:.8rem;color:var(--accent-ink)}
+.quiet b{font-size:1rem}
+.quiet span.d{color:var(--muted);font-size:.93rem}
+.tz{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:.95rem}
 /* Emergency */
-.sos{background:var(--danger-soft);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.resbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.resbtns{display:flex;flex-wrap:wrap;gap:8px}
+.resbtns button{font:inherit;font-weight:600;font-size:.95rem;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 16px;cursor:pointer}
+.resbtns button:hover{border-color:var(--accent);background:var(--accent-soft)}
+.sheet{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.res-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px}
+.res-head .when{font-family:var(--f-mono);font-size:.8rem;color:var(--accent-ink);width:100%}
+.res-head b{font-size:1.05rem}
+.res-head .where{color:var(--muted);font-size:.92rem}
+.res dl{margin:0;display:grid;grid-template-columns:92px 1fr;gap:6px 12px;font-size:.95rem}
+.res dt{color:var(--muted);font-size:.85rem;padding-top:1px}
+.res dd{margin:0;min-width:0}
+.sheet .drive{border:1px solid var(--line)}
+@media (max-width:520px){.resbtns{width:100%}.resbtns button{flex:1 1 0;padding:8px 6px}.res dl{grid-template-columns:76px 1fr}.sheet{padding:18px 16px}}
+
+.hside{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.btn-sos,.btn-drive{font:inherit;font-weight:600;font-size:.95rem;border-radius:10px;padding:8px 14px;cursor:pointer;text-decoration:none;line-height:1.3}
+.btn-sos{background:var(--danger);color:var(--surface);border:0}
+.btn-drive{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-drive:hover{border-color:var(--accent)}
+.linkish{font:inherit;font-weight:600;background:none;border:0;padding:0;color:var(--danger);text-decoration:underline;cursor:pointer}
+.modal{position:fixed;inset:0;z-index:50;background:var(--scrim);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;
+  padding-block:calc(16px + env(safe-area-inset-top,0px)) calc(16px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.modal-panel{width:100%;max-width:760px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-close{font:inherit;font-weight:600;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 12px;cursor:pointer}
+body.lock{overflow:hidden}
+@media (max-width:520px){.hside{align-items:stretch;width:100%}.actions{justify-content:stretch}.actions>*{flex:1 1 auto;text-align:center}}
+
+.drive{background:var(--surface);border-radius:12px;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.drive p{margin:0;min-width:0;flex:1 1 260px}
+.drive p small{display:block;color:var(--muted);font-size:.88rem}
+.drive a.btn{display:inline-block;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;white-space:nowrap}
+
+.sos{background:var(--bg);border:2px solid var(--danger);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
 .sos h2{color:var(--danger)}
 .sos .grid2{gap:12px}
 .sos .box{background:var(--surface);border-color:transparent}
@@ -130,18 +177,42 @@ footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padd
       <h1>Alejandro en India</h1>
       <p>Dónde está cada día, dónde duerme y a quién llamar. La página se actualiza sola con la fecha de India, que va 11 h 30 min adelante de México.</p>
     </div>
-    <div class="clocks" aria-label="Hora actual">
-      <div class="clock"><span>India</span><b id="clk-in">--:--</b></div>
-      <div class="clock"><span>Ciudad de México</span><b id="clk-mx">--:--</b></div>
+    <div class="hside">
+      <div class="clocks" aria-label="Hora actual">
+        <div class="clock"><span>India</span><b id="clk-in">--:--</b></div>
+        <div class="clock"><span>Ciudad de México</span><b id="clk-mx">--:--</b></div>
+      </div>
+      <div class="actions">
+        <button class="btn-sos" type="button" data-open-sos>Datos de emergencia</button>
+        <a class="btn-drive" href="https://drive.google.com/drive/folders/1JIEdrXDQ70KV-3HdalJ3yx1_tFsyybP3?usp=drive_link" target="_blank" rel="noopener">Carpeta de Drive</a>
+      </div>
     </div>
   </header>
 
+  <nav class="resbar" aria-label="Reservaciones">
+    <span class="eyebrow">Reservaciones</span>
+    <div class="resbtns">
+      <button type="button" data-open-res="hospedajes">Hospedajes</button>
+      <button type="button" data-open-res="vuelos">Vuelos</button>
+      <button type="button" data-open-res="trenes">Trenes</button>
+    </div>
+  </nav>
+
   <section class="today" id="today" aria-live="polite"></section>
 
-  <section class="sos" aria-labelledby="sos-h">
-    <h2 id="sos-h">Si no saben de él o hay una emergencia</h2>
-    <div class="grid2" id="sos"></div>
+  <section class="calm" aria-labelledby="calm-h">
+    <h2 id="calm-h">Cuándo es normal no saber de él</h2>
+    <p class="lead">En estos momentos va a estar sin señal o con muy poca. Si no contesta, lo más probable es que esté en uno de ellos.</p>
+    <ul class="quiet">
+      <li><span class="when">4–5 nov</span><b>Vuelos de ida</b><span class="d">Unas 29 horas de viaje con escala en Montreal. Avisa al aterrizar en Delhi: jueves 5 hacia las 11:15 de la mañana, hora de México.</span></li>
+      <li><span class="when">16–22 nov</span><b>Trek en el Himalaya</b><span class="d">En la montaña casi no hay señal. Puede pasar varios días sin escribir. Va en grupo, con guías de Indiahikes.</span></li>
+      <li><span class="when">23 nov</span><b>Tren de 16 horas</b><span class="d">Del norte de Bengala a Varanasi. La señal va y viene.</span></li>
+      <li><span class="when">30 nov – 1 dic</span><b>Vuelos de regreso</b><span class="d">Delhi, Zúrich y Toronto. Llega a la Ciudad de México el martes 1 de diciembre a la 01:15.</span></li>
+    </ul>
+    <div class="tz">Si pasa más tiempo del esperado sin noticias, abran <button class="linkish" type="button" data-open-sos>Datos de emergencia</button>.</div>
+    <div class="tz"><b>Para calcular la hora:</b> India va 11 horas y media adelante. Cuando en México son las 9:00 de la mañana, en India son las 8:30 de la noche.</div>
   </section>
+
 
   <section class="strip-wrap" aria-labelledby="strip-h">
     <h2 id="strip-h">El recorrido</h2>
@@ -154,7 +225,29 @@ footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padd
     <div class="days" id="days"></div>
   </section>
 
-  <footer>Horarios en hora local de donde esté Alejandro. Datos al 1 de noviembre de 2026; los planes de paseo pueden cambiar, las reservas no.</footer>
+  <footer>Horarios en hora local de donde esté Alejandro. Datos al 1 de noviembre de 2026. Solo incluye hospedajes y traslados reservados.</footer>
+</div>
+
+<div class="modal" id="sos-modal" hidden>
+  <div class="modal-panel sos" role="dialog" aria-modal="true" aria-labelledby="sos-h">
+    <div class="modal-top">
+      <h2 id="sos-h">Datos de emergencia</h2>
+      <button class="modal-close" type="button" data-close aria-label="Cerrar">Cerrar</button>
+    </div>
+    <div class="grid2" id="sos"></div>
+    <div class="drive"><p><b>¿Necesitan su pasaporte, códigos de reserva o contactos personales?</b><small>Todo está en la carpeta de Drive. Solo abre con la cuenta de Google que recibió la invitación.</small></p><a class="btn" href="https://drive.google.com/drive/folders/1JIEdrXDQ70KV-3HdalJ3yx1_tFsyybP3?usp=drive_link" target="_blank" rel="noopener">Abrir carpeta de Drive</a></div>
+  </div>
+</div>
+
+<div class="modal" id="info-modal" hidden>
+  <div class="modal-panel sheet" role="dialog" aria-modal="true" aria-labelledby="info-h">
+    <div class="modal-top">
+      <h2 id="info-h">Reservaciones</h2>
+      <button class="modal-close" type="button" data-close aria-label="Cerrar">Cerrar</button>
+    </div>
+    <div class="res-list" id="info-body"></div>
+    <div class="drive"><p><b>Códigos de reservación y comprobantes</b><small>Están en la carpeta de Drive. Solo abre con la cuenta de Google que recibió la invitación.</small></p><a class="btn" href="https://drive.google.com/drive/folders/1JIEdrXDQ70KV-3HdalJ3yx1_tFsyybP3?usp=drive_link" target="_blank" rel="noopener">Abrir carpeta de Drive</a></div>
+  </div>
 </div>
 
 <script>
@@ -168,8 +261,6 @@ const R={
 
 const P=(n,label)=>({n,label});
 const C={
-  deendayal:P("+91 98731 41754","Deendayal (anfitrión)"),
-  planner:P("+91 92895 03085","Wedding planner de la boda"),
   joeys:P("+91 98186 42824","Joey's Hostel"),
   ashutosh:P("+91 84231 60288","Ashutosh (Wander Station)"),
   wander:P("+91 94157 98378","Wander Station (recepción)")
@@ -177,14 +268,14 @@ const C={
 
 const S={
   plane:{name:"En el avión",addr:"Vuelos de Air Canada",contacts:[]},
-  dd:{name:"DD Homestay, casa de Deendayal",addr:"B-20, Vikram Nagar (junto a Feroz Shah Kotla), Nueva Delhi 110002",contacts:[C.deendayal]},
+  dd:{name:"Apoi Ki Homes (Airbnb), anfitrión Rachaliu",addr:"26, 3er piso, Arjun Nagar, Safdarjung Enclave, Nueva Delhi 110029. Mismo edificio que el hospital Maanmati",contacts:[],extra:"Contacto con el anfitrión por la app de Airbnb."},
   zostel:{name:"Zostel Jaipur (Hawa Mahal)",addr:"Primer piso, 85-A Rajamal Ka Talab, edificio ICICI Bank, Chandi ki Taksal, frente a la Tourist Police Station, Jaipur 302002",contacts:[],extra:"Hostal. No tenemos teléfono directo; está frente a la estación de Policía Turística."},
   sumiran:{name:"Departamento de Sumiran Chettri (Airbnb)",addr:"Spring Town Road, Ward 42, Siliguri 734008 (cerca de Vega Mall)",contacts:[],extra:"Contacto con la anfitriona solo por Airbnb."},
   trek:{name:"Campamentos de Indiahikes",addr:"Trek Sandakphu–Phalut, cordillera Singalila. Campamento base en Sepi (Darjeeling, Bengala Occidental)",contacts:[],extra:"En la montaña la señal es escasa o nula: es normal no saber de él uno o varios días. Va en grupo con un trek leader de Indiahikes."},
   train:{name:"Estación New Jalpaiguri y tren nocturno",addr:"Estación NJP (Siliguri) → tren Brahmaputra Express 15658, vagón con literas (2A)",contacts:[]},
   wander:{name:"Wander Station (hostal)",addr:"D 21/24, Rana Mahal Ghat, Bengali Tola, Varanasi. A 450 m a pie de la calle principal",contacts:[C.ashutosh,C.wander],extra:"Correo: wanderstationhostels@gmail.com"},
   joeys:{name:"Joey's Hostel",addr:"1/49 Lalita Park, Laxmi Nagar, Main Vikas Marg, Delhi 110092 (East Delhi)",contacts:[C.joeys],extra:"Correo: joeyshostel@gmail.com"},
-  tbd:{name:"Por confirmar",addr:"Posible noche extra en Joey's Hostel; si no, en el aeropuerto de Delhi (Terminal 3) hasta su vuelo de la 01:45",contacts:[C.joeys]},
+  tbd:{name:"Joey's Hostel y aeropuerto de Delhi",addr:"En la noche va al aeropuerto de Delhi (Terminal 3) para su vuelo de la 01:45",contacts:[C.joeys]},
   home:{name:"En casa",addr:"Ciudad de México",contacts:[]}
 };
 
@@ -197,41 +288,40 @@ const H={
 };
 
 const D=[
- {d:"2026-11-04",r:"travel",title:"Sale de México",sum:"Vuela a Montreal y espera unas 10 horas para el vuelo largo a Delhi.",ev:[["06:00","Sale de CDMX (Terminal 1), Air Canada AC 2094"],["12:05","Llega a Montreal (hora de Montreal)"],["22:05","Sale a Delhi, Air Canada AC 50"]],s:"plane"},
- {d:"2026-11-05",r:"travel",title:"Vuelo a Delhi",sum:"Todo el día en el aire. Aterriza de noche y toma un Uber a casa de Deendayal.",ev:[["22:45","Aterriza en Delhi, Terminal 3 (hora de India)"],["~00:30","Llega a casa de Deendayal (ya es 6 nov)"]],s:"dd"},
- {d:"2026-11-06",r:"delhi",title:"Descanso y jet lag",sum:"Día tranquilo en Delhi para adaptarse al horario. Primer día de Diwali.",ev:[["Día","Paseo ligero cerca de Vikram Nagar"]],s:"dd",tag:"Diwali"},
- {d:"2026-11-07",r:"jaipur",title:"Tren a Jaipur",sum:"Madruga para el tren a Jaipur, la Ciudad Rosa.",ev:[["05:20","Sale de casa de Deendayal"],["06:10","Tren 12015 Ajmer Shatabdi desde Nueva Delhi (NDLS)"],["10:35","Llega a Jaipur"],["13:00","Entrada al hostal Zostel"]],s:"zostel",tag:"Diwali"},
- {d:"2026-11-08",r:"jaipur",title:"Diwali en Jaipur",sum:"Día principal de Diwali: fuertes, bazares y la ciudad iluminada de noche.",ev:[["Día","Ciudad vieja, Hawa Mahal y bazares"],["Noche","Luces de Diwali"]],s:"zostel",tag:"Diwali"},
- {d:"2026-11-09",r:"jaipur",title:"Excursión desde Jaipur",sum:"Día para Amber y Jaigarh, o una excursión a Abhaneri / Bhangarh.",ev:[["Día","Excursión por definir"]],s:"zostel",tag:"Diwali"},
- {d:"2026-11-10",r:"jaipur",title:"Regreso a Delhi",sum:"Última mañana en Jaipur y tren de vuelta a Delhi por la tarde.",ev:[["10:00","Sale del hostal"],["17:35","Tren 12016 Shatabdi a Delhi"],["22:30","Llega a Nueva Delhi (NDLS) y va a casa de Deendayal"]],s:"dd"},
- {d:"2026-11-11",r:"delhi",title:"Paseo por Delhi",sum:"Monumentos y museos de Delhi.",ev:[["Día","Paseo por la ciudad"]],s:"dd"},
- {d:"2026-11-12",r:"delhi",title:"Taj Mahal y Agra",sum:"Excursión en grupo con los invitados de la boda.",ev:[["07:45","Salida del Ginger Hotel, Safdarjung (Bali Marg, 110021)"],["Mañana","Taj Mahal"],["Tarde","Fuerte de Agra"],["~20:00","Regreso a Delhi (depende del tráfico)"]],s:"dd",ctx:[C.planner]},
- {d:"2026-11-13",r:"delhi",title:"Partido de futbol del novio",sum:"Mañana libre (Mehrauli y Qutub Minar) y por la tarde futbol con el grupo de la boda.",ev:[["Mañana","Mehrauli"],["15:00","Partido en GD Goenka, The Flagship School, Vasant Kunj"]],s:"dd",ctx:[C.planner]},
- {d:"2026-11-14",r:"delhi",title:"La boda de Sofía y Rohan",sum:"Recepción al mediodía y fiesta en la noche, en dos lugares distintos.",ev:[["12:30","Recepción: 3 Motilal Nehru Place, entrada por Janpath Rd, 110011"],["19:00","After party: Eldeco Centre, Hauz Rani, Malviya Nagar, 110017"]],s:"dd",tag:"Boda",ctx:[C.planner]},
- {d:"2026-11-15",r:"himalaya",title:"Vuelo a Bagdogra",sum:"Vuela al norte de Bengala, al pie del Himalaya, y duerme en Siliguri.",ev:[["11:15","Sale de casa de Deendayal"],["14:50","Vuelo IndiGo 6E 6378, Terminal 1 de Delhi"],["16:45","Llega a Bagdogra y va a Siliguri"]],s:"sumiran"},
- {d:"2026-11-16",r:"himalaya",title:"Inicio del trek",sum:"Traslado de unas 7 horas por carretera de montaña al campamento base de Sepi.",ev:[["Mañana","Recogida de Indiahikes en Siliguri / NJP (hora por confirmar)"],["Tarde","Llega al campamento base en Sepi"]],s:"trek",tag:"Trek"},
- {d:"2026-11-17",r:"himalaya",title:"Trek, día 2",sum:"Caminando por la cordillera Singalila.",ev:[],s:"trek",tag:"Trek"},
- {d:"2026-11-18",r:"himalaya",title:"Trek, día 3",sum:"Subiendo hacia Sandakphu (3,636 m), con vista al Everest y al Kanchenjunga.",ev:[],s:"trek",tag:"Trek"},
- {d:"2026-11-19",r:"himalaya",title:"Trek, día 4",sum:"En la parte alta de la ruta, hacia Phalut.",ev:[],s:"trek",tag:"Trek"},
- {d:"2026-11-20",r:"himalaya",title:"Trek, día 5",sum:"En la parte alta de la ruta.",ev:[],s:"trek",tag:"Trek"},
- {d:"2026-11-21",r:"himalaya",title:"Trek, día 6",sum:"Bajando de regreso hacia Sepi.",ev:[],s:"trek",tag:"Trek"},
- {d:"2026-11-22",r:"himalaya",title:"Fin del trek",sum:"Regresa a Sepi y baja en camioneta a la estación de New Jalpaiguri. Espera ahí su tren nocturno.",ev:[["~21:00","Llega a la estación NJP"],["00:15","Sale el tren a DDU (ya es 23 nov)"]],s:"train",tag:"Trek"},
- {d:"2026-11-23",r:"varanasi",title:"Tren a Varanasi",sum:"Casi todo el día en tren. Llega a Varanasi al anochecer.",ev:[["00:15","Brahmaputra Express 15658 desde NJP"],["16:33","Llega a la estación DD Upadhyaya (DDU)"],["~18:00","Llega al hostal en Varanasi"]],s:"wander"},
- {d:"2026-11-24",r:"varanasi",title:"Dev Deepawali en Varanasi",sum:"Fiesta de las lámparas: los 84 ghats del Ganges se iluminan. Todo el día a pie por las multitudes.",ev:[["~17:00–19:45","Encendido de lámparas en los ghats"]],s:"wander",tag:"Festival"},
- {d:"2026-11-25",r:"delhi",title:"Vuelo de regreso a Delhi",sum:"Mañana en Varanasi y vuelo a Delhi por la tarde. Llega a su último hostal en East Delhi.",ev:[["10:30","Sale del hostal"],["~14:30","Va al aeropuerto de Varanasi"],["17:15","Vuelo IndiGo 6E 5292"],["18:50","Llega a Delhi, Terminal 3"],["~20:00","Llega a Joey's Hostel"]],s:"joeys"},
- {d:"2026-11-26",r:"delhi",title:"Delhi",sum:"Paseo por Delhi (Old Delhi, Fuerte Rojo, museos).",ev:[],s:"joeys"},
- {d:"2026-11-27",r:"delhi",title:"Delhi",sum:"Paseo por Delhi, o excursión de un día a Mathura y Vrindavan.",ev:[],s:"joeys"},
- {d:"2026-11-28",r:"delhi",title:"Delhi",sum:"Paseo por Delhi.",ev:[],s:"joeys"},
- {d:"2026-11-29",r:"delhi",title:"Último día en India",sum:"Tarde libre en Delhi y en la noche al aeropuerto.",ev:[["11:00","Salida de Joey's (salvo que agregue la noche)"],["~22:00","Sale al aeropuerto, Terminal 3"]],s:"tbd"},
- {d:"2026-11-30",r:"travel",title:"Vuelo de regreso",sum:"Delhi → Zúrich (escala de unas 7 horas) → Toronto → Ciudad de México.",ev:[["01:45","Sale de Delhi (Swiss, AC 6825)"],["Día","Escala en Zúrich, luego AC 881 a Toronto"],["Noche","AC 1889 a Ciudad de México"]],s:"plane"},
+ {d:"2026-11-04",r:"travel",title:"Sale de México",sum:"Vuela a Montreal y de ahí a Delhi.",ev:[["06:00","Sale de CDMX (Terminal 1), Air Canada AC 2094"],["12:05","Llega a Montreal (hora de Montreal)"],["22:05","Sale a Delhi, Air Canada AC 50"]],s:"plane",quiet:"Va en avión casi todo el día. Es normal que no conteste."},
+ {d:"2026-11-05",r:"travel",title:"Llega a Delhi",sum:"Aterriza de noche en Delhi.",ev:[["22:45","Aterriza en Delhi, Terminal 3 (hora de India)"]],s:"dd",quiet:"Va en avión casi todo el día. Avisa al aterrizar (11:15 de la mañana en México)."},
+ {d:"2026-11-06",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"dd"},
+ {d:"2026-11-07",r:"jaipur",title:"Viaje a Jaipur",sum:"Tren de Delhi a Jaipur en la mañana.",ev:[["06:10","Tren 12015 Ajmer Shatabdi desde Nueva Delhi (NDLS)"],["10:35","Llega a Jaipur"]],s:"zostel"},
+ {d:"2026-11-08",r:"jaipur",title:"Jaipur",sum:"En Jaipur.",ev:[],s:"zostel"},
+ {d:"2026-11-09",r:"jaipur",title:"Jaipur",sum:"En Jaipur.",ev:[],s:"zostel"},
+ {d:"2026-11-10",r:"jaipur",title:"Regreso a Delhi",sum:"Tren de Jaipur a Delhi en la tarde.",ev:[["17:35","Tren 12016 Shatabdi a Delhi"],["22:30","Llega a Nueva Delhi (NDLS)"]],s:"dd"},
+ {d:"2026-11-11",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"dd"},
+ {d:"2026-11-12",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"dd"},
+ {d:"2026-11-13",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"dd"},
+ {d:"2026-11-14",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"dd"},
+ {d:"2026-11-15",r:"himalaya",title:"Vuelo a Bagdogra",sum:"Vuela de Delhi a Bagdogra, en el norte de Bengala, y duerme en Siliguri.",ev:[["14:50","Vuelo IndiGo 6E 6378, Terminal 1 de Delhi"],["16:45","Llega a Bagdogra"]],s:"sumiran"},
+ {d:"2026-11-16",r:"himalaya",title:"Inicio del trek",sum:"Traslado por carretera al campamento base de Sepi.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-17",r:"himalaya",title:"Trek",sum:"En el trek con Indiahikes.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-18",r:"himalaya",title:"Trek",sum:"En el trek con Indiahikes.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-19",r:"himalaya",title:"Trek",sum:"En el trek con Indiahikes.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-20",r:"himalaya",title:"Trek",sum:"En el trek con Indiahikes.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-21",r:"himalaya",title:"Trek",sum:"En el trek con Indiahikes.",ev:[],s:"trek",tag:"Trek"},
+ {d:"2026-11-22",r:"himalaya",title:"Fin del trek",sum:"Baja de la montaña a la estación de New Jalpaiguri y toma un tren nocturno.",ev:[["00:15","Sale el tren a DDU (ya es 23 nov)"]],s:"train",tag:"Trek",quiet:"Baja de la montaña; recupera señal en la tarde o noche."},
+ {d:"2026-11-23",r:"varanasi",title:"Viaje a Varanasi",sum:"Casi todo el día en tren. Llega a Varanasi al anochecer.",ev:[["16:33","Llega a la estación DD Upadhyaya (DDU), cerca de Varanasi"]],s:"wander",quiet:"Va en tren casi todo el día; la señal va y viene."},
+ {d:"2026-11-24",r:"varanasi",title:"Varanasi",sum:"En Varanasi.",ev:[],s:"wander"},
+ {d:"2026-11-25",r:"delhi",title:"Regreso a Delhi",sum:"Vuela de Varanasi a Delhi en la tarde.",ev:[["17:15","Vuelo IndiGo 6E 5292"],["18:50","Llega a Delhi, Terminal 3"]],s:"joeys"},
+ {d:"2026-11-26",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"joeys"},
+ {d:"2026-11-27",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"joeys"},
+ {d:"2026-11-28",r:"delhi",title:"Delhi",sum:"En Delhi.",ev:[],s:"joeys"},
+ {d:"2026-11-29",r:"delhi",title:"Último día en India",sum:"En Delhi. En la noche va al aeropuerto.",ev:[],s:"tbd"},
+ {d:"2026-11-30",r:"travel",title:"Vuelo de regreso",sum:"Delhi → Zúrich → Toronto → Ciudad de México.",ev:[["01:45","Sale de Delhi (Swiss, AC 6825)"]],s:"plane",quiet:"Va en aviones casi todo el día. Es normal que no conteste."},
  {d:"2026-12-01",r:"travel",title:"Llega a casa",sum:"Aterriza en la Ciudad de México de madrugada.",ev:[["01:15","Llega a CDMX (hora de México)"]],s:"home"}
 ];
 
 const EMERG=[
  {name:"Emergencias en India",lines:[P("112","Policía, ambulancia, bomberos (todo el país)")]},
  {name:"Embajada de México en Nueva Delhi",addr:"F 9/5 Vasant Vihar, Nueva Delhi 110057",lines:[P("+91 97177 20003","Emergencias (fuera de horario, para mexicanos)"),P("+91 11 4507 1373","Oficina")]},
- {name:"Embajada de España en Nueva Delhi",addr:"12 Prithviraj Road, Nueva Delhi 110011 · Consulado: 4 Golf Links",lines:[P("+91 98101 74160","Emergencia consular (españoles)"),P("+91 11 4129 3000","Embajada")]},
- {name:"Durante la boda (6–15 nov)",lines:[C.planner]}
+ {name:"Embajada de España en Nueva Delhi",addr:"12 Prithviraj Road, Nueva Delhi 110011 · Consulado: 4 Golf Links",lines:[P("+91 98101 74160","Emergencia consular (españoles)"),P("+91 11 4129 3000","Embajada")]}
 ];
 
 const WD=["dom","lun","mar","mié","jue","vie","sáb"];
@@ -287,9 +377,9 @@ function renderToday(key,now){
   el.innerHTML=`<div class="today-top"><span class="pill">Hoy · día ${i+1} de ${D.length}</span><span class="eyebrow">${WDL[dt.getUTCDay()]} ${dt.getUTCDate()} de ${MOL[dt.getUTCMonth()]}</span></div>
     <div><div class="eyebrow">${esc(R[day.r].label)}</div><h2>${esc(day.title)}</h2></div>
     <p class="summary">${esc(day.sum)}</p>
-    ${day.r==="himalaya"&&day.s==="trek"?`<div class="note">Está en la montaña. Si no contesta, lo más probable es que no tenga señal.</div>`:""}
+    ${day.s==="trek"?`<div class="note">Está en la montaña. Si no contesta, lo más probable es que no tenga señal.</div>`:day.quiet?`<div class="note">${esc(day.quiet)}</div>`:""}
     <div class="grid2">
-      ${day.ev.length?`<div class="box"><h3>Plan del día</h3>${eventsHTML(day.ev)}</div>`:""}
+      ${day.ev.length?`<div class="box"><h3>Traslados</h3>${eventsHTML(day.ev)}</div>`:""}
       ${stayBox(st)}
       ${day.ctx?`<div class="box"><h3>Contacto del evento</h3>${day.ctx.map(phoneHTML).join("")}</div>`:""}
       ${hosp?`<div class="box"><h3>Hospital grande cercano</h3><p>${esc(hosp)}</p></div>`:""}
@@ -316,7 +406,7 @@ function renderStrip(key){
 
 const STAGES=[
   ["2026-11-04","Ida","travel"],["2026-11-06","Delhi","delhi"],["2026-11-07","Jaipur","jaipur"],
-  ["2026-11-11","Delhi y la boda","delhi"],["2026-11-15","Siliguri y trek en el Himalaya","himalaya"],
+  ["2026-11-11","Delhi","delhi"],["2026-11-15","Siliguri y trek en el Himalaya","himalaya"],
   ["2026-11-23","Varanasi","varanasi"],["2026-11-25","Delhi","delhi"],["2026-11-30","Regreso","travel"]
 ];
 function renderDays(key){
@@ -370,6 +460,59 @@ function selectNum(b){const a=b.previousElementSibling;const r=document.createRa
 
 render();
 setInterval(render,30000);
+const RES={
+ hospedajes:{title:"Hospedajes",items:[
+  {when:"5–15 nov",name:"Apoi Ki Homes (Airbnb)",city:"Delhi",rows:[["Tipo","Habitación compartida"],["Entrada","Jue 5 nov, 13:00 (llega pasada la medianoche)"],["Salida","Dom 15 nov, 10:00"],["Anfitrión","Rachaliu, por la app de Airbnb"],["Dirección","26, 3er piso, Arjun Nagar, Safdarjung Enclave, Nueva Delhi 110029. Mismo edificio que el hospital Maanmati"]]},
+  {when:"7–10 nov",name:"Zostel Jaipur (Hawa Mahal)",city:"Jaipur",rows:[["Tipo","Hostal, dormitorio mixto de 8 camas"],["Entrada","Sáb 7 nov, 13:00"],["Salida","Mar 10 nov, 10:00"],["Dirección","Primer piso, 85-A Rajamal Ka Talab, edificio ICICI Bank, Chandi ki Taksal, frente a la Tourist Police Station, Jaipur 302002"]]},
+  {when:"15–16 nov",name:"Departamento de Sumiran Chettri (Airbnb)",city:"Siliguri",rows:[["Entrada","Dom 15 nov, 13:00 (llega en la tarde)"],["Salida","Lun 16 nov, 10:00"],["Anfitriona","Sumiran Chettri, por la app de Airbnb"],["Dirección","Spring Town Road, Ward 42, Siliguri 734008 (cerca de Vega Mall)"]]},
+  {when:"16–22 nov",name:"Campamentos de Indiahikes",city:"Trek Sandakphu–Phalut",rows:[["Tipo","Casas de campaña y albergues de montaña, en grupo"],["Base","Campamento base en Sepi (Darjeeling, Bengala Occidental)"],["Señal","Escasa o nula durante el trek"]]},
+  {when:"23–25 nov",name:"Wander Station (hostal)",city:"Varanasi",rows:[["Tipo","Hostal, dormitorio mixto de 8 camas"],["Entrada","Lun 23 nov, 13:00 (llega hacia las 18:00)"],["Salida","Mié 25 nov, 10:30"],["Teléfonos","Ashutosh +91 84231 60288 · recepción +91 94157 98378"],["Correo","wanderstationhostels@gmail.com"],["Dirección","D 21/24, Rana Mahal Ghat, Bengali Tola, Varanasi. A 450 m a pie de la calle principal"]]},
+  {when:"25–29 nov",name:"Joey's Hostel",city:"Delhi (East Delhi)",rows:[["Tipo","Hostal, dormitorio mixto de 12 camas, con desayuno"],["Entrada","Mié 25 nov, 12:00 (llega hacia las 20:00)"],["Salida","Dom 29 nov, 11:00"],["Teléfono","+91 98186 42824"],["Correo","joeyshostel@gmail.com"],["Dirección","1/49 Lalita Park, Laxmi Nagar, Main Vikas Marg, Delhi 110092"]]}
+ ]},
+ vuelos:{title:"Vuelos",items:[
+  {when:"Mié 4 nov",name:"Air Canada AC 2094",city:"Ciudad de México → Montreal",rows:[["Sale","06:00, aeropuerto de CDMX, Terminal 1"],["Llega","12:05, Montreal (hora local)"]]},
+  {when:"Mié 4 nov",name:"Air Canada AC 50",city:"Montreal → Delhi",rows:[["Sale","22:05, Montreal"],["Llega","Jue 5 nov, 22:45 hora de India, Delhi Terminal 3 (11:15 en México)"]]},
+  {when:"Dom 15 nov",name:"IndiGo 6E 6378",city:"Delhi → Bagdogra",rows:[["Sale","14:50, Delhi Terminal 1"],["Llega","16:45, Bagdogra"]]},
+  {when:"Mié 25 nov",name:"IndiGo 6E 5292",city:"Varanasi → Delhi",rows:[["Sale","17:15, Varanasi"],["Llega","18:50, Delhi Terminal 3"]]},
+  {when:"Lun 30 nov",name:"AC 6825 (operado por Swiss)",city:"Delhi → Zúrich",rows:[["Sale","01:45, Delhi Terminal 3"],["Llega","06:20, Zúrich (hora local)"]]},
+  {when:"Lun 30 nov",name:"Air Canada AC 881",city:"Zúrich → Toronto",rows:[["Sale","13:20, Zúrich"],["Llega","16:15, Toronto Pearson, Terminal 1"]]},
+  {when:"Lun 30 nov",name:"Air Canada Rouge AC 1889",city:"Toronto → Ciudad de México",rows:[["Sale","20:55, Toronto Pearson, Terminal 1"],["Llega","Mar 1 dic, 01:15, aeropuerto de CDMX, Terminal 1"]]}
+ ]},
+ trenes:{title:"Trenes",items:[
+  {when:"Sáb 7 nov",name:"12015 Ajmer Shatabdi",city:"Delhi → Jaipur",rows:[["Sale","06:10, estación New Delhi (NDLS)"],["Llega","10:35, Jaipur (JP)"],["Lugar","Clase CC (asientos), coche C3, asiento 59"]]},
+  {when:"Mar 10 nov",name:"12016 Shatabdi",city:"Jaipur → Delhi",rows:[["Sale","17:35, Jaipur (JP)"],["Llega","22:30, estación New Delhi (NDLS)"],["Lugar","Clase CC (asientos), coche C4, asiento 70"]]},
+  {when:"Lun 23 nov",name:"15658 Brahmaputra Express",city:"New Jalpaiguri → DD Upadhyaya (Varanasi)",rows:[["Sale","00:15, New Jalpaiguri (NJP), Siliguri"],["Llega","16:33, DD Upadhyaya (DDU), a ~1 h de Varanasi"],["Lugar","Clase 2A (literas). Confirmado; coche y litera se asignan el día del viaje"]]}
+ ]}
+};
+function renderRes(key){
+  const r=RES[key];
+  document.getElementById("info-h").textContent=r.title;
+  document.getElementById("info-body").innerHTML=r.items.map(it=>`<article class="res">
+    <div class="res-head"><span class="when">${esc(it.when)}</span><b>${esc(it.name)}</b><span class="where">${esc(it.city)}</span></div>
+    <dl>${it.rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></article>`).join("");
+}
+let lastFocus=null,openId=null;
+function openModal(id,resKey){
+  if(openId) document.getElementById(openId).hidden=true; else lastFocus=document.activeElement;
+  if(resKey) renderRes(resKey);
+  const m=document.getElementById(id); m.hidden=false; m.scrollTop=0; openId=id;
+  document.body.classList.add("lock"); m.querySelector("[data-close]").focus();
+}
+function closeModal(){
+  if(!openId) return;
+  document.getElementById(openId).hidden=true; openId=null; document.body.classList.remove("lock");
+  if(location.hash){try{history.replaceState(null,"",location.pathname+location.search)}catch(_){}}
+  if(lastFocus) lastFocus.focus();
+}
+document.addEventListener("click",e=>{
+  if(e.target.closest("[data-open-sos]")){openModal("sos-modal");return;}
+  const r=e.target.closest("[data-open-res]"); if(r){openModal("info-modal",r.dataset.openRes);return;}
+  if(e.target.closest("[data-close]")||e.target.classList.contains("modal")) closeModal();
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+function checkHash(){const h=location.hash.slice(1); if(h==="emergencia")openModal("sos-modal"); else if(RES[h])openModal("info-modal",h);}
+window.addEventListener("hashchange",checkHash);checkHash();
+
 </script>
 
 </body>
